@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react'
-import './App.css';
-import socketIOClient from "socket.io-client";
+import React, {useState} from 'react'
 
 function App() {
   const [messageList, setMessageList] = useState([])
@@ -8,24 +6,8 @@ function App() {
   const [newMessageText, setNewMessageText] = useState('')
   const [socket, setSocket] = useState(null)
 
-  useEffect(() => {
-    const socket = socketIOClient('http://localhost:3000')
-    setSocket(socket)
-    socket.on("initialMessageList", data => {
-      setMessageList(data)
-    });
-    socket.on("newMessageFromServer", data => {
-      console.log('received message from server', data)
-      setMessageList(messageList => [...messageList, data])
-    });
-    return () => socket.disconnect()
-  }, []);
-
   const handleSubmit = e => {
     e.preventDefault()
-    if (newMessageText && nickName) {
-      socket.emit('newMessage', {author: nickName, text: newMessageText})
-    }
   }
 
   return (

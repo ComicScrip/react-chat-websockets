@@ -23,19 +23,23 @@ function App() {
 
       <form onSubmit={handleSubmit}>
         <h2>New Message</h2>
-        <input type="text"
-               name="author"
-               placeholder="nickname"
-               value={nickName}
-               required
-               onChange={(e) => setNickName(e.target.value)}/>
-        <input type="text"
-               name="messageContent"
-               placeholder="message"
-               value={newMessageText}
-               required
-               onChange={(e) => setNewMessageText(e.target.value)}/>
-        <input type="submit" disabled={!nickName || !newMessageText} onClick={handleSubmit} value="send"/>
+        <input 
+          type="text"
+          name="author"
+          placeholder="nickname"
+          value={nickName}
+          required
+          onChange={(e) => setNickName(e.target.value)}
+        />
+        <input 
+          type="text"
+          name="messageContent"
+          placeholder="message"
+          value={newMessageText}
+          required
+          onChange={(e) => setNewMessageText(e.target.value)}
+        />
+        <input type="submit" value="send" />
       </form>
     </div>
   );

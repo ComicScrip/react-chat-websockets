@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,8 +14,5 @@
     "express": "^4.17.1",
     "socket.io": "^2.3.0",
     "uniqid": "^5.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.3"
   }
 }

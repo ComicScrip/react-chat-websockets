@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react'
-import './App.css';
+import React, {useState, useEffect} from 'react'
 import socketIOClient from "socket.io-client";
 
 function App() {
@@ -9,22 +8,21 @@ function App() {
   const [socket, setSocket] = useState(null)
 
   useEffect(() => {
-    const socket = socketIOClient('http://localhost:3000')
-    setSocket(socket)
-    socket.on("initialMessageList", data => {
-      setMessageList(data)
+    const socket = socketIOClient('http://localhost:3000');
+    setSocket(socket);
+
+    socket.on('initialMessageList', (messages) => {
+      setMessageList(messages);
     });
-    socket.on("newMessageFromServer", data => {
-      console.log('received message from server', data)
-      setMessageList(messageList => [...messageList, data])
-    });
+
+    socket.on('messageFromServer', newMessage => setMessageList(messageList => [...messageList, newMessage]));
     return () => socket.disconnect()
-  }, []);
+  }, [])
 
   const handleSubmit = e => {
     e.preventDefault()
     if (newMessageText && nickName) {
-      socket.emit('newMessage', {author: nickName, text: newMessageText})
+      socket.emit('messageFromClient', {text: newMessageText, author: nickName})
     }
   }
 
@@ -41,18 +39,22 @@ function App() {
 
       <form onSubmit={handleSubmit}>
         <h2>New Message</h2>
-        <input type="text"
-               name="author"
-               placeholder="nickname"
-               value={nickName}
-               required
-               onChange={(e) => setNickName(e.target.value)}/>
-        <input type="text"
-               name="messageContent"
-               placeholder="message"
-               value={newMessageText}
-               required
-               onChange={(e) => setNewMessageText(e.target.value)}/>
+        <input 
+          type="text"
+          name="author"
+          placeholder="nickname"
+          value={nickName}
+          required
+          onChange={(e) => setNickName(e.target.value)}
+        />
+        <input 
+          type="text"
+          name="messageContent"
+          placeholder="message"
+          value={newMessageText}
+          required
+          onChange={(e) => setNewMessageText(e.target.value)}
+        />
         <input type="submit" disabled={!nickName || !newMessageText} onClick={handleSubmit} value="send"/>
       </form>
     </div>
